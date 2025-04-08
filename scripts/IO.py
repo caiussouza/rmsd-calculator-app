@@ -1,7 +1,7 @@
 import tempfile
 from pathlib import Path
 
-from openbabel import pybel
+from openbabel import openbabel as ob
 from biopandas.mol2 import PandasMol2
 
 
@@ -12,13 +12,6 @@ class IO():
     """
     @staticmethod
     def open(file_path):
-        """
-        Converts a file to MOL2 format and returns its data as a DataFrame.
-        Args:
-            file_path (str): Path to the input file.
-        Returns:
-            pandas.DataFrame: DataFrame containing the MOL2 file data.
-        """
         file_path = Path(file_path)
         file_type = file_path.suffix[1:]
 
@@ -33,13 +26,16 @@ class IO():
 
     @staticmethod
     def _to_mol2(file_path, file_type):
-        mols = list(pybel.readfile(file_type, str(file_path)))
+        ob_conversion = ob.OBConversion()
+        ob_conversion.SetInAndOutFormats(file_type, "mol2")
 
-        if not mols:
+        mol = ob.OBMol()
+        success = ob_conversion.ReadFile(mol, str(file_path))
+        if not success:
             raise ValueError(f"No molecules found on {file_path.name}")
 
-        mol = mols[0]
-        mol.removeh()
-        mol2_str = mol.write("mol2")
+        mol.DeleteHydrogens()
+
+        mol2_str = ob_conversion.WriteString(mol)
 
         return mol2_str
