@@ -11,26 +11,41 @@ from RMSD import RMSD
 st.set_page_config(page_title="RMSD Calculator", layout="centered")
 st.markdown("""
     <style>
+    @media (prefers-color-scheme: dark) {
+        .sticky-header {
+            background-color: rgba(14, 17, 23, 0.8);
+            color: white;
+            border-bottom: 1px solid #444;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        .sticky-header {
+            background-color: rgba(255, 255, 255, 0.8);
+            color: black;
+            border-bottom: 1px solid #ccc;
+        }
+    }
+
     .sticky-header {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
-        background-color: rgba(14, 17, 23, 0.8);
         padding: 25px 0;
         text-align: center;
         font-size: 36px;
         font-weight: bold;
-        border-bottom: 1px solid #ccc;
         z-index: 1000;
     }
+
     .main-content {
-        padding-top: 80px; /* espaço abaixo do header */
+        padding-top: 80px;
     }
     </style>
 
     <div class="sticky-header">
-            <br>
+        <br>
         Molecular RMSD Calculator
     </div>
     <div class="main-content">
